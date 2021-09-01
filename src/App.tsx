@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState, useCallback} from 'react';
 
-import { SideBar } from './components/SideBar';
-import { Content } from './components/Content';
+import {SideBar} from './components/SideBar';
+import {Content} from './components/Content';
 
-import { api } from './services/api';
+import {api} from './services/api';
 
 import './styles/global.scss';
 
@@ -27,7 +27,7 @@ interface MovieProps {
   Runtime: string;
 }
 
-export function App() {
+export function App () {
   const [selectedGenreId, setSelectedGenreId] = useState(1);
 
   const [genres, setGenres] = useState<GenreResponseProps[]>([]);
@@ -51,12 +51,13 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
-    setSelectedGenreId(id);
-  }
+  const handleClickButton = useCallback((id: number) => {
+      setSelectedGenreId(id);
+    }, []
+  );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div style={{display: 'flex', flexDirection: 'row'}}>
       <SideBar
         genres={genres}
         selectedGenreId={selectedGenreId}

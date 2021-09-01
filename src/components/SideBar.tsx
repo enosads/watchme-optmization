@@ -1,4 +1,5 @@
-import { Button } from "./Button";
+import {Button} from "./Button";
+import {memo} from "react";
 
 interface SideBarProps {
   genres: Array<{
@@ -10,27 +11,32 @@ interface SideBarProps {
   buttonClickCallback: (args: any) => void;
 }
 
-export function SideBar({
-  genres,
-  selectedGenreId,
-  buttonClickCallback
-}: SideBarProps) {
-  return (
-    <nav className="sidebar">
-      <span>Watch<p>Me</p></span>
+export const SideBar = memo(
+  ({
+     genres,
+     selectedGenreId,
+     buttonClickCallback
+   }: SideBarProps) => {
+    return (
+      <nav className="sidebar">
+        <span>Watch<p>Me</p></span>
 
-      <div className="buttons-container">
-        {genres.map(genre => (
-          <Button
-            key={String(genre.id)}
-            title={genre.title}
-            iconName={genre.name}
-            onClick={() => buttonClickCallback(genre.id)}
-            selected={selectedGenreId === genre.id}
-          />
-        ))}
-      </div>
-
-    </nav>
-  )
-}
+        <div className="buttons-container">
+          {genres.map(genre => (
+            <Button
+              key={String(genre.id)}
+              title={genre.title}
+              iconName={genre.name}
+              onClick={() => buttonClickCallback(genre.id)}
+              selected={selectedGenreId === genre.id}
+            />
+          ))}
+        </div>
+      </nav>
+    )
+  },
+  (
+    prevProps,
+    nextProps) =>
+    (Object.is(prevProps.genres, nextProps.genres) && Object.is(prevProps.selectedGenreId, nextProps.selectedGenreId))
+)
